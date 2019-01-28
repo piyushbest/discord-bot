@@ -18,7 +18,7 @@ from imgurpython import ImgurClient
 from random import choice, shuffle
 
 Forbidden= discord.Embed(title="Permission Denied", description="1) Please check whether you have permission to perform this action or not. \n2) Please check whether my role has permission to perform this action in this channel or not. \n3) Please check my role position.", color=0x00ff00)
-client = commands.Bot(description="MultiVerse Official Bot", command_prefix=commands.when_mentioned_or("o!" ), pm_help = True)
+client = commands.Bot(description="MultiVerse Official Bot", command_prefix=commands.when_mentioned_or("mv!" ), pm_help = True)
 reddit = praw.Reddit(client_id='G-SK66FZT8at9g',
                      client_secret='DLqIkkdoD0K8xKpxuaMAhRscrS0',
                      user_agent='android:com.G-SK66FZT8at9g.SolarBot:v1.2.3 (by /u/LaidDownRepaer)')
@@ -325,10 +325,10 @@ async def tweet(ctx, usernamename:str, *, txt:str):
 
 @client.command(pass_context=True)
 async def ownerinfo(ctx):
-    embed = discord.Embed(title="Information about owner", description="Main Creator: DarkLegend", color=0x00ff00)
+    embed = discord.Embed(title="Information about owner", description="Main Creator: piyushbest", color=0x00ff00)
     embed.set_footer(text="Copyright@UK Soft")
     embed.set_author(name=" Bot Owner Names- piyushbest#7370: 420525168381657090\nTag<!--Back-->#1488: 399274658027012098")
-    embed.add_field(name="Site- https://discordbots.org/bot/515403515217313795", value="Thanks for adding our bot", inline=True)
+    embed.add_field(name="Site- https://discordapp.com/api/oauth2/authorize?client_id=517931488331825173&permissions=8&scope=bot", value="Thanks for adding our bot", inline=True)
     await client.say(embed=embed)
 
 	
@@ -747,7 +747,7 @@ async def mute(ctx, member: discord.Member=None, mutetime=None):
       await client.say("Muted **{}**".format(member.name))
       await client.send_message(member, "You are muted by {0} for {1} Minutes".format(ctx.message.author, output))
       for channel in member.server.channels:
-        if channel.name == '╰☆☆-multiverse-log-☆☆╮':
+        if channel.name == '╰☆☆-obliviouscraft-log-☆☆╮':
             embed=discord.Embed(title="User Muted!", description="**{0}** was muted by **{1}** for {2} minutes!".format(member, ctx.message.author, output), color=0x37F60A)
             await client.send_message(channel, embed=embed)
             await asyncio.sleep(mutetime)
@@ -983,7 +983,7 @@ async def partner(ctx, *, msg=None):
     else:
        for server in client.servers:
          for channel in server.channels:
-           if channel.name == '★-multiverse-partner-★':
+           if channel.name == '★-obliviouscraft-partner-★':
                r, g, b = tuple(int(x * 255) for x in colorsys.hsv_to_rgb(random.random(), 1, 1))
                embed = discord.Embed(color = discord.Color((r << 16) + (g << 8) + b))
                embed.add_field(name='Discord Partner', value='-------------------',inline = False) 
