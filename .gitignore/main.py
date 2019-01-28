@@ -14,24 +14,36 @@ import requests
 import json
 import praw
 import aiohttp
-
+from imgurpython import ImgurClient
+from random import choice, shuffle
 
 Forbidden= discord.Embed(title="Permission Denied", description="1) Please check whether you have permission to perform this action or not. \n2) Please check whether my role has permission to perform this action in this channel or not. \n3) Please check my role position.", color=0x00ff00)
-client = commands.Bot(description="MultiVerse Official Bot", command_prefix=commands.when_mentioned_or("mv!" ), pm_help = True)
+client = commands.Bot(description="MultiVerse Official Bot", command_prefix=commands.when_mentioned_or("o!" ), pm_help = True)
 reddit = praw.Reddit(client_id='G-SK66FZT8at9g',
                      client_secret='DLqIkkdoD0K8xKpxuaMAhRscrS0',
                      user_agent='android:com.G-SK66FZT8at9g.SolarBot:v1.2.3 (by /u/LaidDownRepaer)')
+
+CLIENT_ID = "1fd3ef04daf8cab"
+CLIENT_SECRET = "f963e574e8e3c17993c933af4f0522e1dc01e230"
+imgur = ImgurClient(CLIENT_ID,CLIENT_SECRET)
+
+GIPHY_API_KEY = "dc6zaTOxFJmzC"
+
 
 client.remove_command('help')
 
 
 async def status_task():
     while True:
-        await client.change_presence(game=discord.Game(name='for mv!help'))
+        await client.change_presence(game=discord.Game(name='for mv!help', type=2))
         await asyncio.sleep(5)
-        await client.change_presence(game=discord.Game(name='with '+str(len(set(client.get_all_members())))+' users'))
+        await client.change_presence(game=discord.Game(name=str(len(set(client.get_all_members())))+' users', type=3))
         await asyncio.sleep(5)
-        await client.change_presence(game=discord.Game(name='in '+str(len(client.servers))+' servers'))
+        await client.change_presence(game=discord.Game(name=str(len(client.servers))+' servers', type=3))
+        await asyncio.sleep(5)
+        await client.change_presence(game=discord.Game(name='music'))
+        await asyncio.sleep(5)
+        await client.change_presence(game=discord.Game(name='I need some upvotes to grow ;('))
         await asyncio.sleep(5)
 
 left = '⏪'
@@ -39,11 +51,11 @@ right = '⏩'
 r, g, b = tuple(int(x * 255) for x in colorsys.hsv_to_rgb(random.random(), 1, 1))
 general1=discord.Embed(title="General Commands | Page 1", description="**__mv!donate__** \nSends donation link \n\n**__mv!invite__** or **__mv!authlink__** \nUse it to invite our bot to your server \n\n**__mv!upvote__**\nUse this command to upvote our bot(Link will be in dm)\n\n **__mv!google__**\n Use it like- ``mv!google <anything>`` to google anything\n\n**__mv!youtube__**\nUse it like- ``mv!youtube <anything>`` to search anything on youtube\n\n**__mv!membernames__**\nUse it to get member names in dm\n\n**__mv!invites__** \nUse it like ``mv!invites @user`` or ``mv!invite`` for get invites done by you/tagged person in server. \n__Note:__**If bot does not responds that means you do not have invited any member on that server.**\n\n**__mv!remind__**\nUse it like ``mv!remind <time in minutes> <text like what to remind>`` Example: ``mv!remind 2 Drink water``.\n\n**__mv!helpmusic__**\nTo get list of music commands like: mv!play,mv!skip,etc.", color = discord.Color((r << 16) + (g << 8) + b))
 general2=discord.Embed(title="General Commands | Page 2", description="**__mv!serverinvite__** \nUse it to get server invite link.\n\n**__mv!avatar__**\nUse it like ``mv!avatar or mv!avatar @user``\n\n**__mv!ping__**\nUse it to check ping of bot\n\n**__mv!enterme__**\nUse it like ``mv!enterme <giveaway channel>`` to enter in a giveaway running in a particular channel\n\n**__mv!poll__**\nUse it like ``mv!poll Question Option1 Option2 ..... Option9``.\n\n**__mv!github__**\nUse it like- ``mv!github uksoftworld``\n\n**__mv!bottutorial__**\nUse it like ``mv!bottutorial <tutorial name by darklegend>``\n\n**__mv!dyno__**\nUse it like ``mv!dyno <dyno command name>``\n\n**__mv!happybirthday @user__**\nTo wish someone happy birthday\n\n**__mv!verify__**Use it to get verified role. Note- It needs proper setup.\n\n**__mv!rank__**\nUse it to check your daily multiverse rank(xp + level)", color = discord.Color((r << 16) + (g << 8) + b))
-general3=discord.Embed(title="Fun Commands <==> General Commands | Page 3", description="**__mv!joke__**\n\n**__mv!kiss @user__**\n\n**__mv!hug @user__**\n\n**__mv!slap @user__**\n\n**__mv!damn__**\n\n**__mv!burned__**\n\n**__mv!savage__**\n\n**__mv!thuglife__**\n\n**__mv!membernames__**\n\n**__mv!gender @user__**\n\n**__mv!virgin @user__**\n\n**__mv!meme__**\n\n**__mv!rolldice__**\n\n**__mv!flipcoin__**\n\n**__mv!guess__**\n\n**__mv!movie <movie name>__**\n\n**__mv!rps <rock ,paper or scissors>__**\n\n**__mv!urban <string>__**", color = discord.Color((r << 16) + (g << 8) + b))
+general3=discord.Embed(title="Fun Commands <==> General Commands | Page 3", description="**__mv!joke__**\n\n**__mv!kiss @user__**\n\n**__mv!hug @user__**\n\n**__mv!slap @user__**\n\n**__mv!damn__**\n\n**__mv!burned__**\n\n**__mv!savage__**\n\n**__mv!thuglife__**\n\n**__mv!membernames__**\n\n**__mv!gender @user__**\n\n**__mv!virgin @user__**\n\n**__mv!meme__**\n\n**__mv!rolldice__**\n\n**__mv!flipcoin__**\n\n**__mv!guess__**\n\n**__mv!movie <movie name>__**\n\n**__mv!rps <rock ,paper or scissors>__**\n\n**__mv!urban <string>__**\n\n**__mv!imgursearch <anything>__**\n\n**__mv!gifsearch <anything>__**\n\n**__mv!talk anything__**\nUse it to make bot say anything in voice channel", color = discord.Color((r << 16) + (g << 8) + b))
 mod1=discord.Embed(title="Admin and Mod Commands | Page 1", description="**__mv!partner(Admin permission required) (Cooldown of 12hours)__** \nUse it like ``mv!partner <partnership description>`` to partner with many servers with are connected with MultiVerse Official bot \n\n**__mv!dm(Admin permission required)__** \nUse it like ``mv!dm @user <text>`` to dm user from bot \n\n**__mv!say(Admin permission required)__**\nUse it like ``mv!say <text>``\n\n **__mv!showme(Requires a role named Giveaways)__**\n To see how many people are taking part in giveaway\n\n**__mv!pickwinner(Requires a role named Giveaways)__**\nTo pick winner of currentmost giveaways\n\n**__mv!embed(Admin permission required__**\nUse it like ``mv!embed <text>``\n\n**__mv!membercount(Kick members Permission Required)__** \n Use it to get membercount of server\n\n**__mv!lock(Kick members Permission Required)__**\nUse it like ``mv!lock #channel or mv!lock`` to lock a channel\n\n**__mv!unlock(Kick members Permission Required)__**\nUse it like ``mv!unlock #channel or mv!unlock`` to unlock a channel", color = discord.Color((r << 16) + (g << 8) + b))
-mod2=discord.Embed(title="Admin and Mod Commands | Page 2", description="**__mv!removemod(Admin Permission Required)__** \nUse it like ``mv!removemod @user`` to remove him from mod. Note-You need Moderator role in your server below bot to use it.\n\n**__mv!makemod(Admin Permission Required)__**\nUse it like ``mv!makemod @user`` to make him mod. Note-You need Moderator role in your server below multiverse bot to use it.\n\n**__mv!friend(Admin Permission Required)__**\nUse it like ``mv!friend @user`` to give anyone Friend of Owner role\n\n**__mv!role(Manage Roles Permission Required)__**\nUse it like ``mv!role @user <rolename>``.\n\n**__mv!setnick(Manage nickname permission required)__**\nUse it like ``mv!setnick @user <New nickname>`` to change the nickname of tagged user.\n\n**__mv!english(Kick members Permission Required)__**\nUse it like ``mv!english @user`` when someone speaks languages other than English.\n\n**__mv!serverinfo(Kick members Permission Required)__**\nUse it like ``mv!serverinfo`` to get server info\n\n**__mv!userinfo(Kick members Permission Required)__**\nUse it like ``mv!userinfo @user`` to get some basic info of tagged user.", color = discord.Color((r << 16) + (g << 8) + b))
+mod2=discord.Embed(title="Admin and Mod Commands | Page 2", description="**__mv!removemod(Admin Permission Required)__** \nUse it like ``mv!removemod @user`` to remove him from mod. Note-You need Moderator role in your server below bot to use it.\n\n**__mv!makemod(Admin Permission Required)__**\nUse it like ``mv!makemod @user`` to make him mod. Note-You need Moderator role in your server below multiverse bot to use it.\n\n**__mv!friend(Admin Permission Required)__**\nUse it like ``mv!friend @user`` to give anyone Friend of Owner role\n\n**__mv!role(Manage Roles Permission Required)__**\nUse it like ``mv!role @user/all <rolename>`` to give/take role from @user or all in server.\n\n**__mv!setnick(Manage nickname permission required)__**\nUse it like ``mv!setnick all/@user <New nickname>`` to change the nickname of tagged user or all in the server.\n\n**__mv!english(Kick members Permission Required)__**\nUse it like ``mv!english @user`` when someone speaks languages other than English.\n\n**__mv!serverinfo(Kick members Permission Required)__**\nUse it like ``mv!serverinfo`` to get server info\n\n**__mv!userinfo(Kick members Permission Required)__**\nUse it like ``mv!userinfo @user`` to get some basic info of tagged user.", color = discord.Color((r << 16) + (g << 8) + b))
 mod3=discord.Embed(title="Admin and Mod Commands | Page 3", description="**__mv!unbanall(Unban members Permission Required)__** \nUse it like ``mv!unbanall`` to unban all members\n\n**__mv!unban__**\nUse it like: ``mv!unban userid`` to unban user.\n\n**__mv!kick(Kick members Permission Required)__**\nUse it like ``mv!kick @user`` to kick any user\n\n**__mv!muteinchannel(Ban members Permission Required)__**\nUse it like ``mv!muteinchannel @user <time in minutes>`` Example- ``mv!muteinchannel @user 1`` to mute user for 1min.\n\n**__mv!unmuteinchannel(Ban members Permission Required)__**\nUse it like ``mv!unmuteinchannel @user`` to unmute user from that channel.\n\n**__mv!roles(Kick members Permission Required)__**\nUse it to check roles present in server.\n\n**__mv!purge(Manage Messages Permission Required)__**\nUse it like ``mv!purge <number>`` to clear any message.\n\n**__mv!mute(Mute members Permission Required)__**\nUse it like ``mv!mute @user <time in minutes>`` to mute any user. **Note-You need to add Muted role in your server if it is not already there also you must need to change permission of all channels and disable send_message permission for that role.**\n\n**__mv!unmute(Mute members Permission Required)__**\nUse it like ``mv!unmute @user`` to unmute anyone.", color = discord.Color((r << 16) + (g << 8) + b))
-mod4=discord.Embed(title="Admin and Mod Commands | Page 4", description="**__mv!ban(Ban members Permission Required)__** \nUse it like ``mv!ban @user`` to ban any user\n\n**__mv!rules(Kick members Permission Required)__**\nUse it like ``mv!rules @user <violation type>`` to warn user\n\n**__mv!warn(Kick members Permission Required)__**\nUse it like ``mv!warn @user <violation type>`` to warn any user.\n\n**__mv!norole(Kick members Permission Required)__**\nUse it like ``mv!norole @user`` to warn anyone if he/she asks for promotion.\n\n**__mv!getuser(Kick members Permission Required)__**\nUse it like ``mv!getuser rolename`` to get list of all users having a that role.\n\n**__mv!roleinfo(Manage roles Permission Required)__**\nUse it like ``mv!roleinfo <rolename>`` to get basic info about that role.\n\n**__mv!addchannel(Administrator Permission Required)__**\nUse it like ``mv!addchannel <channelname>`` to add that channel in server.\n\n**__mv!delchannel(Administrator Permission Required)__**\nUse it like ``mv!delchannel <channelname>`` to delete that channel in server.\n\n**__mv!setnickall__**\nIt changes nickname of all members by adding text in front of member nicknames in server.\n\n**__mv!resetnickall__**\nUse it to reset nickname of all users in server", color = discord.Color((r << 16) + (g << 8) + b))
+mod4=discord.Embed(title="Admin and Mod Commands | Page 4", description="**__mv!ban(Ban members Permission Required)__** \nUse it like ``mv!ban @user`` to ban any user\n\n**__mv!rules(Kick members Permission Required)__**\nUse it like ``mv!rules @user <violation type>`` to warn user\n\n**__mv!warn(Kick members Permission Required)__**\nUse it like ``mv!warn @user <violation type>`` to warn any user.\n\n**__mv!norole(Kick members Permission Required)__**\nUse it like ``mv!norole @user`` to warn anyone if he/she asks for promotion.\n\n**__mv!getuser(Kick members Permission Required)__**\nUse it like ``mv!getuser rolename`` to get list of all users having a that role.\n\n**__mv!roleinfo(Manage roles Permission Required)__**\nUse it like ``mv!roleinfo <rolename>`` to get basic info about that role.\n\n**__mv!addchannel(Administrator Permission Required)__**\nUse it like ``mv!addchannel <channelname>`` to add that channel in server.\n\n**__mv!delchannel(Administrator Permission Required)__**\nUse it like ``mv!delchannel <channelname>`` to delete that channel in server.\n\n**__mv!resetnick__**\nUse it like: ``mv!resetnick @user/all`` to reset nickname of @user or all in the server", color = discord.Color((r << 16) + (g << 8) + b))
 
 gen_cmd = (general1, general2, general3)
 mod_cmd = (mod1, mod2, mod3, mod4)
@@ -145,21 +157,21 @@ async def on_reaction_add(reaction, user):
         embed = discord.Embed(color = discord.Color((r << 16) + (g << 8) + b))
         embed.set_author(name='Emoji Help')
         embed.set_image(url = 'https://image.ibb.co/caM2BK/help.gif')
-        embed.add_field(name = 'o!wow',value ='WOW emoji <a:WOW:515854429485006848>',inline = False)
-        embed.add_field(name = 'o!cat',value ='Cat emoji <a:agooglecat:516174312294842389>',inline = False)
-        embed.add_field(name = 'o!surprised',value ='Surprised emoji <a:eyebigger:516174315058626560>',inline = False)
-        embed.add_field(name = 'o!angry',value ='Angry emoji <a:angear:516174316950388772>',inline = False)
-        embed.add_field(name = 'o!fearfromme',value ='Scary emoji <a:shiroeglassespush:516174320532193289>',inline = False)
-        embed.add_field(name = 'o!dank',value ='DankMemer emoji <a:OnThaCoco:515853700682743809>',inline = False)
-        embed.add_field(name = 'o!thinking1',value ='Think emoji1 <a:thinking:516183328613990400>',inline = False)
-        embed.add_field(name = 'o!thinking2',value ='Think emoji2 <a:thinking2:516183323127709699>',inline = False)
-        embed.add_field(name = 'o!happy',value ='Happy emoji <a:happy:516183323052212236>',inline = False)
-        embed.add_field(name = 'o!santa',value ='Santa emoji <a:santa:517232271678504970>',inline = False)
-        embed.add_field(name = 'o!lol',value ='LoL emoji <a:lol:517232283670020096>',inline = False)
-        embed.add_field(name = 'o!love',value ='Love emoji <a:love:517232300912672774>',inline = False)
-        embed.add_field(name = 'o!mad',value ='Mad emoji <a:mad:517232301176913951>',inline = False)
-        embed.add_field(name = 'o!alien',value ='Alien emoji <a:alien:517232332663422986>',inline = False)
-        embed.add_field(name = 'o!!hi',value ='Saying Hi emoji <a:hi:517232279148429313>',inline = False)
+        embed.add_field(name = 'mv!wow',value ='WOW emoji <a:WOW:515854429485006848>',inline = False)
+        embed.add_field(name = 'mv!cat',value ='Cat emoji <a:agooglecat:516174312294842389>',inline = False)
+        embed.add_field(name = 'mv!surprised',value ='Surprised emoji <a:eyebigger:516174315058626560>',inline = False)
+        embed.add_field(name = 'mv!angry',value ='Angry emoji <a:angear:516174316950388772>',inline = False)
+        embed.add_field(name = 'mv!fearfromme',value ='Scary emoji <a:shiroeglassespush:516174320532193289>',inline = False)
+        embed.add_field(name = 'mv!dank',value ='DankMemer emoji <a:OnThaCoco:515853700682743809>',inline = False)
+        embed.add_field(name = 'mv!thinking1',value ='Think emoji1 <a:thinking:516183328613990400>',inline = False)
+        embed.add_field(name = 'mv!thinking2',value ='Think emoji2 <a:thinking2:516183323127709699>',inline = False)
+        embed.add_field(name = 'mv!happy',value ='Happy emoji <a:happy:516183323052212236>',inline = False)
+        embed.add_field(name = 'mv!santa',value ='Santa emoji <a:santa:517232271678504970>',inline = False)
+        embed.add_field(name = 'mv!lol',value ='LoL emoji <a:lol:517232283670020096>',inline = False)
+        embed.add_field(name = 'mv!love',value ='Love emoji <a:love:517232300912672774>',inline = False)
+        embed.add_field(name = 'mv!mad',value ='Mad emoji <a:mad:517232301176913951>',inline = False)
+        embed.add_field(name = 'mv!alien',value ='Alien emoji <a:alien:517232332663422986>',inline = False)
+        embed.add_field(name = 'mv!hi',value ='Saying Hi emoji <a:hi:517232279148429313>',inline = False)
         react_message = await client.send_message(user,embed=embed)
         await asyncio.sleep(30)
         await client.delete_message(react_message)
@@ -171,21 +183,15 @@ async def on_reaction_add(reaction, user):
 @client.event
 async def on_member_join(member):
     for channel in member.server.channels:
-        if member.bot:
-            return
         if channel.name == '★彡-welcome-彡★':
-            r, g, b = tuple(int(x * 255) for x in colorsys.hsv_to_rgb(random.random(), 1, 1))
-            embed = discord.Embed(title=f'Welcome {member.name} to {member.server.name}', description='Do not forget to check rules and never try to break any one of them', color = discord.Color((r << 16) + (g << 8) + b))
+            embed = discord.Embed(title=f'Welcome {member.name} to {member.server.name}', description='Do not forget to check rules and never try to break any one of them', color = 0x36393E)
             embed.add_field(name='__Thanks for joining__', value='**Hope you will be active here.**', inline=True)
             embed.set_thumbnail(url='https://media.giphy.com/media/OkJat1YNdoD3W/giphy.gif') 
-            embed.set_image(url = member.avatar_url)
             embed.add_field(name='__Join position__', value='{}'.format(str(member.server.member_count)), inline=True)
             embed.add_field(name='Time of joining', value=member.joined_at)
+            await asyncio.sleep(0.4)
             await client.send_message(channel, embed=embed) 
-            role = discord.utils.get(member.server.roles, name='Verified')
-            await asyncio.sleep(60)
-            await client.add_roles(member, role)
-
+            
 @client.event
 async def on_member_remove(member):
     for channel in member.server.channels:
@@ -210,12 +216,70 @@ async def merrychristmas(ctx, user:discord.Member=None):
         await client.say(embed=embed)
 
 @client.command(pass_context=True)
+async def imgursearch(ctx, *, term: str=None):
+    task = functools.partial(imgur.gallery_search, term,
+                             advanced=None, sort='time',
+                             window='all', page=0)
+    task = client.loop.run_in_executor(None, task)
+    try:
+        results = await asyncio.wait_for(task, timeout=10)
+    except asyncio.TimeoutError:
+        await client.say("Error: request timed out")
+    else:
+        if results:
+            shuffle(results)
+            msg = "Search results...\n"
+            for r in results[:3]:
+                msg += r.gifv if hasattr(r, "gifv") else r.link
+                msg += "\n"
+            await client.say(msg)
+        else:
+            await client.say("Your search terms gave no results.")
+
+@client.command(pass_context=True)
+async def gifsearch(ctx, *keywords):
+    if keywords:
+        keywords = "+".join(keywords)
+    else:
+        await client.say('Invalid args')
+        return
+    r, g, b = tuple(int(x * 255) for x in colorsys.hsv_to_rgb(random.random(), 1, 1))
+    embed = discord.Embed(title='Search Results for', description=f'{keywords}', color = discord.Color((r << 16) + (g << 8) + b))
+    url = ("http://api.giphy.com/v1/gifs/search?&api_key={}&q={}"
+           "".format(GIPHY_API_KEY, keywords))
+    async with aiohttp.get(url) as r:
+        result = await r.json()
+        if r.status == 200:
+            if result["data"]:
+                embed.set_image(url=result["data"][0]["url"])
+                embed.set_footer(text=f'Requested by: {ctx.message.author.display_name}', icon_url=f'{ctx.message.author.avatar_url}')
+                embed.timestamp = datetime.datetime.utcnow()
+                await client.say(embed=embed)
+            else:
+                await client.say("No results found.")
+        else:
+            await client.say("Error contacting the API")
+
+	
+@client.command(pass_context=True)
 @commands.check(is_dark)
 async def setgame(ctx, *, game:str):
     await client.delete_message(ctx.message)
     await client.change_presence(game=discord.Game(name=game))
     await asyncio.sleep(10)
 
+@client.command(pass_context=True)
+async def jointest(ctx):
+    member = ctx.message.author
+    for channel in member.server.channels:
+        if channel.name == '★彡-welcome-彡★':
+            embed = discord.Embed(title=f'Welcome {member.name} to {member.server.name}', description='Do not forget to check rules and never try to break any one of them', color = 0x36393E)
+            embed.add_field(name='__Thanks for joining__', value='**Hope you will be active here.**', inline=True)
+            embed.set_thumbnail(url='https://media.giphy.com/media/OkJat1YNdoD3W/giphy.gif') 
+            embed.add_field(name='__Join position__', value='{}'.format(str(member.server.member_count)), inline=True)
+            embed.add_field(name='Time of joining', value=member.joined_at)
+            await asyncio.sleep(0.4)
+            await client.send_message(channel, embed=embed) 
 	
 @client.command(pass_context=True)
 async def movie(ctx, *, name:str=None):
@@ -263,7 +327,7 @@ async def tweet(ctx, usernamename:str, *, txt:str):
 async def ownerinfo(ctx):
     embed = discord.Embed(title="Information about owner", description="Main Creator: DarkLegend", color=0x00ff00)
     embed.set_footer(text="Copyright@UK Soft")
-    embed.set_author(name=" Bot Owner Names- DarkLegend#3807: 420525168381657090\nTag<!--Back-->#1488: 399274658027012098")
+    embed.set_author(name=" Bot Owner Names- piyushbest#7370: 420525168381657090\nTag<!--Back-->#1488: 399274658027012098")
     embed.add_field(name="Site- https://discordbots.org/bot/515403515217313795", value="Thanks for adding our bot", inline=True)
     await client.say(embed=embed)
 
@@ -610,40 +674,53 @@ async def ping(ctx):
       await client.say("Ping: {}ms".format(round((t2-t1)*1000)))
 
 @client.command(pass_context = True)
-@commands.has_permissions(administrator=True) 
-async def announce(ctx, channel: discord.Channel=None, *, msg: str):
-    r, g, b = tuple(int(x * 255) for x in colorsys.hsv_to_rgb(random.random(), 1, 1))
-    embed=discord.Embed(title="Announcement", description="{}".format(msg), color = discord.Color((r << 16) + (g << 8) + b))
-    await client.send_message(channel, embed=embed)
-    await client.delete_message(ctx.message)
+async def announce(ctx, channel: discord.Channel=None, *, msg: str=None):
+    member = ctx.message.author
+    if channel is None or msg is None:
+        await client.say('Invalid args. Use this command like ``mv!announce #channel text here``')
+        return
+    else:
+        if member.server_permissions.administrator == False:
+            await client.say('**You do not have permission to use this command**')
+            return
+        else:
+            r, g, b = tuple(int(x * 255) for x in colorsys.hsv_to_rgb(random.random(), 1, 1))
+            embed=discord.Embed(title="Announcement", description="{}".format(msg), color = discord.Color((r << 16) + (g << 8) + b))
+            await client.send_message(channel, embed=embed)
+            await client.delete_message(ctx.message)
 	
 @client.command(pass_context = True)
-@commands.has_permissions(administrator=True) 
 async def delchannel(ctx, channel: discord.Channel=None):
     if channel is None:
         await client.delete_channel(ctx.message.channel)
         await client.send_message(ctx.message.author, "{} channel has been deleted in {}".format(ctx.message.channel.name, ctx.message.server.name))
     else:
-        await client.delete_channel(channel)
-        await client.say("{} channel has been deleted.".format(channel.name))
+        if ctx.message.author.server_permissions.administrator == False:
+            await client.say('**You do not have permission to use this command**')
+            return
+        else:
+            await client.delete_channel(channel)
+            await client.say("{} channel has been deleted.".format(channel.name))
 
 
 @client.command(pass_context = True)
-@commands.has_permissions(administrator=True) 
 async def addchannel(ctx, channel: str=None):
     server = ctx.message.server
     if channel is None:
         await client.say("Please specify a channel name")
     else:
-        everyone_perms = discord.PermissionOverwrite(send_messages=None, read_messages=None)
-        everyone = discord.ChannelPermissions(target=server.default_role, overwrite=everyone_perms)
-        await client.create_channel(server, channel, everyone)
-        await client.say("{} channel has been created.".format(channel))
+        if ctx.message.author.server_permissions.administrator == False:
+            await client.say('**You do not have permission to use this command**')
+            return
+        else:
+            everyone_perms = discord.PermissionOverwrite(send_messages=None, read_messages=None)
+            everyone = discord.ChannelPermissions(target=server.default_role, overwrite=everyone_perms)
+            await client.create_channel(server, channel, everyone)
+            await client.say("{} channel has been created.".format(channel))
 
-	
 @client.command(pass_context = True)
-@commands.has_permissions(kick_members=True) 
 async def mute(ctx, member: discord.Member=None, mutetime=None):
+    msgauthor = ctx.message.author
     if member is None:
         await client.say('Please specify member i.e. Mention a member to mute. Example-``mv!mute @user <time in minutes>``')
         return
@@ -652,6 +729,9 @@ async def mute(ctx, member: discord.Member=None, mutetime=None):
         return
     if member.server_permissions.kick_members:
         await client.say('**You cannot mute admin/moderator!**')
+        return
+    if msgauthor.server_permissions.kick_members == False:
+        await client.say('**You do not have permission. So you are unable to use this command**')
         return
     if discord.utils.get(member.server.roles, name='Muted') is None:
         await client.say('No muted role found. Please add it')
@@ -680,7 +760,6 @@ async def mute(ctx, member: discord.Member=None, mutetime=None):
                 return
 	
 @client.command(pass_context = True)
-@commands.has_permissions(kick_members=True) 
 async def lock(ctx, channelname: discord.Channel=None):
     overwrite = discord.PermissionOverwrite(send_messages=False, read_messages=True)
     if not channelname:
@@ -688,30 +767,41 @@ async def lock(ctx, channelname: discord.Channel=None):
         await client.edit_channel_permissions(ctx.message.channel, role, overwrite)
         await client.say("Channel locked by: {}".format(ctx.message.author))
     else:
-        role = discord.utils.get(ctx.message.server.roles, name='@everyone')
-        await client.edit_channel_permissions(channelname, role, overwrite)
-        await client.say("Channel locked by: {}".format(ctx.message.author))
+        if ctx.message.author.server_permissions.kick_members == False:
+            await client.say('**You do not have permission to use this command**')
+            return
+        else:
+            role = discord.utils.get(ctx.message.server.roles, name='@everyone')
+            await client.edit_channel_permissions(channelname, role, overwrite)
+            await client.say("Channel locked by: {}".format(ctx.message.author))
 	
 @client.command(pass_context = True)
-@commands.has_permissions(kick_members=True) 
 async def unlock(ctx, channelname: discord.Channel=None):
     overwrite = discord.PermissionOverwrite(send_messages=None, read_messages=True)
     if not channelname:
-        role = discord.utils.get(ctx.message.server.roles, name='@everyone')
-        await client.edit_channel_permissions(ctx.message.channel, role, overwrite)
-        await client.say("Channel unlocked by: {}".format(ctx.message.author))
+        if ctx.message.author.server_permissions.kick_members == False:
+            await client.say('**You do not have permission to use this command**')
+            return
+        else:
+            role = discord.utils.get(ctx.message.server.roles, name='@everyone')
+            await client.edit_channel_permissions(ctx.message.channel, role, overwrite)
+            await client.say("Channel unlocked by: {}".format(ctx.message.author))
     else:
-        role = discord.utils.get(ctx.message.server.roles, name='@everyone')
-        await client.edit_channel_permissions(channelname, role, overwrite)
-        await client.say("Channel unlocked by: {}".format(ctx.message.author))
+        if ctx.message.author.server_permissions.kick_members == False:
+            await client.say('**You do not have permission to use this command**')
+            return
+        else:
+            role = discord.utils.get(ctx.message.server.roles, name='@everyone')
+            await client.edit_channel_permissions(channelname, role, overwrite)
+            await client.say("Channel unlocked by: {}".format(ctx.message.author))
 	
 @client.command(pass_context = True)
 async def meme(ctx):
-    colour = '0x' + '008000'
+    r, g, b = tuple(int(x * 255) for x in colorsys.hsv_to_rgb(random.random(), 1, 1))
+    embed = discord.Embed(title='Random Meme', description='from reddit', color = discord.Color((r << 16) + (g << 8) + b))
     async with aiohttp.ClientSession() as session:
         async with session.get("https://api.reddit.com/r/me_irl/random") as r:
             data = await r.json()
-            embed = discord.Embed(title='<a:OnThaCoco:515853700682743809> <a:OnThaCoco:515853700682743809> Random Meme <a:OnThaCoco:515853700682743809> <a:OnThaCoco:515853700682743809>', description='from reddit', color=discord.Color(int(colour, base=16)))
             embed.set_image(url=data[0]["data"]["children"][0]["data"]["url"])
             embed.set_footer(text=f'Requested by: {ctx.message.author.display_name}', icon_url=f'{ctx.message.author.avatar_url}')
             embed.timestamp = datetime.datetime.utcnow()
@@ -793,17 +883,17 @@ async def rolldice(ctx):
 
    
 @client.command(pass_context = True)
-@commands.has_permissions(administrator = True)
 async def dm(ctx, user: discord.Member, *, msg: str):
-    try:
-        await client.send_message(user, msg)
-        await client.delete_message(ctx.message)          
-        await client.say("Success! Your DM has made it! :white_check_mark: ")
-    except discord.ext.commands.MissingPermissions:
-        await client.say("Aw, come on! You thought you could get away with DM'ing people without permissions.")
-    except:
-        await client.say("Error :x:. Make sure your message is shaped in this way: mv!dm [tag person] [msg]")
-	
+   if user is None or msg is None:
+       await client.say('Invalid args. Use this command like: ``mv!dm @user message``')
+   if ctx.message.author.server_permissions.kick_members == False:
+       await client.say('**You do not have permission to use this command**')
+       return
+   else:
+       await client.send_message(user, msg)
+       await client.delete_message(ctx.message)          
+       await client.say("Success! Your DM has made it! :white_check_mark: ")
+
 @client.command(pass_context = True)
 async def flipcoin(ctx):
     choices = ['Heads', 'Tails', 'Coin self-destructed']
@@ -815,28 +905,33 @@ async def flipcoin(ctx):
 
 	
 @client.command(pass_context = True)
-@commands.has_permissions(kick_members=True) 
 async def unmute(ctx, member: discord.Member=None):
     if member is None:
       await client.say('Please specify member i.e. Mention a member to unmute. Example- ``mv!unmute @user``')
     if ctx.message.author.bot:
       return
     else:
-      role = discord.utils.get(member.server.roles, name='Muted')
-      await client.remove_roles(member, role)
-      await client.say("Unmuted **{}**".format(member))
-      for channel in member.server.channels:
-        if channel.name == '╰☆☆-multiverse-log-☆☆╮':
-            embed=discord.Embed(title="User unmuted!", description="**{0}** was unmuted by **{1}**!".format(member, ctx.message.author), color=0xFD1600)
-            await client.send_message(channel, embed=embed)
+      if ctx.message.author.server_permissions.kick_members == False:
+        await client.say('**You do not have permission to use this command**')
+        return
+      else:
+        role = discord.utils.get(member.server.roles, name='Muted')
+        await client.remove_roles(member, role)
+        await client.say("Unmuted **{}**".format(member))
+        for channel in member.server.channels:
+          if channel.name == '╰☆☆-multiverse-log-☆☆╮':
+              embed=discord.Embed(title="User unmuted!", description="**{0}** was unmuted by **{1}**!".format(member, ctx.message.author), color=0xFD1600)
+              await client.send_message(channel, embed=embed)
      
 @client.command(pass_context = True)
-@commands.has_permissions(kick_members=True) 
 @commands.cooldown(rate=5,per=86400,type=BucketType.user) 
 async def access(ctx, member: discord.Member=None):
     if member is None:
       await client.say("Please specify a member to give access to him. Example- ``mv!access @user``")
     if ctx.message.author.bot:
+      return
+    if ctx.message.author.server_permissions.kick_members == False:
+      await client.say('**You do not have permission to use this command**')
       return
     else:
       role = discord.utils.get(member.server.roles, name='Access')
@@ -850,9 +945,11 @@ async def access(ctx, member: discord.Member=None):
             await client.remove_roles(member, role)
 	   
 @client.command(pass_context = True)
-@commands.has_permissions(administrator=True)
 async def setupwelcomer(ctx):
     if ctx.message.author.bot:
+      return
+    if ctx.message.author.server_permissions.administrator == False:
+      await client.say('**You do not have permission to use this command**')
       return
     else:
       server = ctx.message.server
@@ -865,6 +962,9 @@ async def setupwelcomer(ctx):
 async def setuppartner(ctx):
     if ctx.message.author.bot:
       return
+    if ctx.message.author.server_permissions.administrator == False:
+      await client.say('**You do not have permission to use this command**')
+      return
     else:
       server = ctx.message.server
       everyone_perms = discord.PermissionOverwrite(send_messages=False, read_messages=True)
@@ -873,10 +973,12 @@ async def setuppartner(ctx):
       
 @client.command(pass_context=True)
 @commands.cooldown(rate=1,per=86400,type=BucketType.user) 
-@commands.has_permissions(administrator=True)
 async def partner(ctx, *, msg=None):
     if msg is None:
        await client.say("Please specify a partnership description")
+       return
+    if ctx.message.author.server_permissions.administrator == False:
+       await client.say('**You do not have permission to use this command**')
        return
     else:
        for server in client.servers:
@@ -893,9 +995,11 @@ async def partner(ctx, *, msg=None):
                await client.delete_message(ctx.message)
          
 @client.command(pass_context = True)
-@commands.has_permissions(administrator=True)
 async def setuplog(ctx):
     if ctx.message.author.bot:
+      return
+    if ctx.message.author.server_permissions.administrator == False:
+      await client.say('**You do not have permission to use this command**')
       return
     else:
       author = ctx.message.author
@@ -905,11 +1009,13 @@ async def setuplog(ctx):
       await client.create_channel(server, '╰☆☆-multiverse-log-☆☆╮',everyone)
 
 @client.command(pass_context=True)  
-@commands.has_permissions(kick_members=True)
 async def getuser(ctx, role: discord.Role = None):
     if role is None:
         await client.say('Please tag a role to get users having it. Example- ``mv!getuser @role``')
         return
+    if ctx.message.author.server_permissions.kick_members == False:
+       await client.say('**You do not have permission to use this command**')
+       return
     empty = True
     for member in ctx.message.server.members:
         if role in member.roles:
@@ -919,11 +1025,13 @@ async def getuser(ctx, role: discord.Role = None):
         await client.say("Nobody has the role {}".format(role.mention))
 
 @client.command(pass_context = True)
-@commands.has_permissions(kick_members=True)     
 async def userinfo(ctx, user: discord.Member=None):
     if user is None:
-        await client.say('Please tag a user to get user information. Example- ``o!userinfo @user``')
+      await client.say('Please tag a user to get user information. Example- ``mv!userinfo @user``')
     if ctx.message.author.bot:
+      return
+    if ctx.message.author.server_permissions.kick_members == False:
+      await client.say('**You do not have permission to use this command**')
       return
     else:
       r, g, b = tuple(int(x * 255) for x in colorsys.hsv_to_rgb(random.random(), 1, 1))
@@ -957,9 +1065,11 @@ async def iamdark(ctx):
         await client.send_message(author, embed=embed)
 	
 @client.command(pass_context = True)
-@commands.has_permissions(manage_roles=True)
 async def addrole(ctx,*, role:str=None):
     user = ctx.message.author
+    if user.server_permissions.manage_roles == False:
+        await client.say('**You do not have permission to use this command**')
+        return
     if discord.utils.get(user.server.roles, name="{}".format(role)) is None:
         await client.create_role(user.server, name="{}".format(role), permissions=discord.Permissions.none())
         await client.say("{} role has been added.".format(role))
@@ -968,10 +1078,12 @@ async def addrole(ctx,*, role:str=None):
         await client.say("{} role is already exists".format(role))
 		
 @client.command(pass_context = True)
-@commands.has_permissions(manage_roles=True)
 async def roleinfo(ctx,*, role:discord.Role=None):
     if discord.utils.get(ctx.message.server.roles, name="{}".format(role)) is None:
         await client.say("No such role found")
+        return
+    if ctx.message.author.server_permissions.manage_roles == False:
+        await client.say('**You do not have permission to use this command**')
         return
     else:
         r, g, b = tuple(int(x * 255) for x in colorsys.hsv_to_rgb(random.random(), 1, 1))
@@ -985,13 +1097,15 @@ async def roleinfo(ctx,*, role:discord.Role=None):
 		
 
 @client.command(pass_context = True)
-@commands.has_permissions(manage_roles=True)
 async def rolecolor(ctx, role:discord.Role=None, value:str=None):
     if discord.utils.get(ctx.message.server.roles, name="{}".format(role)) is None:
         await client.say("Use this command like ``mv!rolecolor (ROLENAME) (ROLECOLOUR IN HEXCODE)``")
         return
     if value is None:
         await client.say("Use this command like ``mv!rolecolor (ROLENAME) (ROLECOLOUR IN HEXCODE)``")
+        return
+    if ctx.message.author.server_permissions.manage_roles == False:
+        await client.say('**You do not have permission to use this command**')
         return
     else:
         new_val = value.replace("#", "")
@@ -1012,20 +1126,24 @@ async def cthex(ctx,value:str=None):
         await client.say('Use that like: ``color = discord.Color(int(colour, base=16)))``')
 		
 @client.command(pass_context = True)
-@commands.has_permissions(manage_roles=True)
 async def delrole(ctx,*, role: discord.Role = None):
     user = ctx.message.author
     if discord.utils.get(ctx.message.server.roles, name="{}".format(role)) is None:
         await client.say("There is no role with this name in this server")
+    if ctx.message.author.server_permissions.manage_roles == False:
+        await client.say('**You do not have permission to use this command**')
+        return
     else:
         await client.delete_role(ctx.message.server, role)
         await client.say(f"{role} role has been deleted")
 
 	
 @client.command(pass_context=True)
-@commands.has_permissions(ban_members=True)
 async def unbanall(ctx):
     if ctx.message.author.bot:
+      return
+    if ctx.message.author.server_permissions.ban_members == False:
+      await client.say('**You do not have permission to use this command**')
       return
     else:
       server=ctx.message.server
@@ -1108,21 +1226,54 @@ async def iamserverdeveloper(ctx):
     await client.send_message(author, embed=embed)
  
 	
-@client.command(pass_context = True)
-@commands.has_permissions(manage_roles=True)     
-async def role(ctx, user: discord.Member=None, *, role: discord.Role = None):
-        if user is None:
-            await client.say("You haven't specified a member! ")
-        if role is None:
-            await client.say("You haven't specified a role! ")
-        if role not in user.roles:
-            await client.add_roles(user, role)
-            await client.say("{} role has been added to {}.".format(role, user))
-            return
-        if role in user.roles:
-            await client.remove_roles(user, role)
-            await client.say("{} role has been removed from {}.".format(role, user)) 
-          
+@client.group(pass_context=True, invoke_without_command=True)
+@commands.has_permissions(manage_roles=True)  
+async def role(ctx, user:discord.Member=None,*, role:discord.Role=None):
+    if user is None or role is None:
+        await client.say('Use this command like: ``mv!role all/@user role``')
+        return
+    if role in user.roles:
+        await client.remove_roles(user, role)
+        await client.say("{} role has been removed in {}.".format(role, user))
+        return
+    if role not in ctx.message.server.roles:
+        await client.say(f'{role} Not found')
+        return
+    else:
+        await client.add_roles(user, role)
+        await client.say("{} role has been added in {}.".format(role, user))
+        return
+
+@role.command(pass_context=True)
+@commands.has_permissions(manage_roles=True)  
+async def all(ctx,*,role:discord.Role=None):
+    if role is None:
+        await client.say('Use this command like: ``mv!role all role``')
+        return
+    if role not in ctx.message.server.roles:
+        await client.say(f'{role} Not found')
+        return
+    else:
+        for user in ctx.message.server.members:
+          await asyncio.sleep(1)
+          try:
+            if role in user.roles:
+              await client.remove_roles(user, role)
+              state = 'remove'
+            else:
+              await client.add_roles(user, role)
+              state = 'add'
+
+          except:
+            pass
+
+        if state == 'remove':
+            await client.say(f'Removed {role.name} role from everyone')
+
+        if state == 'add':
+            await client.say(f'Gave {role.name} role to everyone')
+        else:
+            pass
 	
 
 @client.command(pass_context = True)
@@ -1154,12 +1305,13 @@ async def warn(ctx, userName: discord.User=None,*, message:str=None):
         if channel.name == '╰☆☆-multiverse-log-☆☆╮':
             embed=discord.Embed(title="User Warned!", description="{0} warned by {1} for {2}".format(userName, ctx.message.author, message), color=0x0521F6)
             await client.send_message(channel, embed=embed)      
-
-@client.command(pass_context = True)
+	
+@client.group(pass_context=True, invoke_without_command=True)
 @commands.has_permissions(manage_nicknames=True)     
 async def setnick(ctx, user: discord.Member=None, *, nickname=None):
+    member = user.name
     if user is None:
-      await client.say('Please tag a person to change nickname. Example- ``mv!setnick @user <new nickname>``')
+      await client.say('Please tag a person to change nickname. Example- ``mv!setnick @user/all <new nickname>``')
       return
     else:
       await client.change_nickname(user, nickname)
@@ -1169,11 +1321,11 @@ async def setnick(ctx, user: discord.Member=None, *, nickname=None):
             embed=discord.Embed(title="Changed Nickname of User!", description="**{0}** nickname was changed by **{1}**!".format(member, ctx.message.author), color=0x0521F6)
             await client.send_message(channel, embed=embed)
 		
-@client.command(pass_context = True)
+@setnick.command(pass_context=True)
 @commands.has_permissions(administrator=True)     
-async def setnickall(ctx,*, nickname:str=None):
+async def all(ctx,*,nickname:str=None):
     if nickname is None:
-      await client.say('Please use this command like:``mv!setnickall <new nickname>``')
+      await client.say('Please use this command like:``mv!setnick all <new nickname>``')
       return
     else: 
       for user in ctx.message.server.members:
@@ -1181,32 +1333,48 @@ async def setnickall(ctx,*, nickname:str=None):
           new_nick = nickname + user.name
           await asyncio.sleep(1)
           await client.change_nickname(user, new_nick)
+          state = 'add'
         except:
           pass	
+      if state == 'add':
+        await client.say(f'Setted up nickname of everyone to ``{nickname} + username``')
+        return
+      else:
+        pass
 
-@client.command(pass_context = True)
+
+@client.group(pass_context=True, invoke_without_command=True)
+@commands.has_permissions(manage_nicknames=True)     
+async def resetnick(ctx, user: discord.Member=None):
+    member = user.name
+    if user is None:
+      await client.say('Please tag a person to reset nickname. Example- ``mv!resetnick @user/all``')
+      return
+    else:
+      nick = user.name
+      await client.change_nickname(user, nick)
+      await client.delete_message(ctx.message)
+      for channel in user.server.channels:
+        if channel.name == '╰☆☆-multiverse-log-☆☆╮':
+            embed=discord.Embed(title="Reset Nickname of User!", description="**{0}** nickname was reset by **{1}**!".format(member, ctx.message.author), color=0x0521F6)
+            await client.send_message(channel, embed=embed)
+		
+@resetnick.command(pass_context=True)
 @commands.has_permissions(administrator=True)     
-async def resetnickall(ctx):
+async def all(ctx):
     for user in ctx.message.server.members:
       try:
         await asyncio.sleep(1)
         nick = user.name
         await client.change_nickname(user, nick)
+        state = 'done'
       except:
         pass	
-
-@client.command(pass_context = True)
-@commands.has_permissions(administrator=True)     
-async def resetnickallggc(ctx):
-    for user in ctx.message.server.members:
-      try:
-        nick = user.name
-        await client.change_nickname(user, nick)
-        new_n = '[GGC]' + user.name
-        await client.change_nickname(user, new_n)
-      except:
-        pass	
-
+    if state == 'done':
+      await client.say('Resetted all nicknames')
+    else:
+      pass
+		
 @client.command(pass_context=True)
 async def poll(ctx, question, *options: str):
         if len(options) <= 1:
@@ -1714,7 +1882,7 @@ async def heroku(ctx, *, msg=None):
     if not msg: await client.say("Tag a user please")
     if '@here' in msg or '@everyone' in msg:
       return
-    else: await client.say('Host your bot on heroku. Check: https://www.youtube.com/watch?v=avEgttTLZgo' + msg)
+    else: await client.say('Host your bot on heroku. Check: https://www.youtube.com/watch?v=avEgttTLZgo ' + msg)
     return
 
 @client.command(pass_context=True)
